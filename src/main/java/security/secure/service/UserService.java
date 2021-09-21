@@ -12,6 +12,7 @@ public interface UserService {
     List<String> listCategories();
 
     //ResponseEntity<String> edit(Long id, UserDTO userDTO);
+    String edit(Long id,UserDTO userDTO);
 
     User findByUsername(String username);
 

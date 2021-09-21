@@ -15,6 +15,8 @@ import security.secure.model.User;
 import security.secure.security.JwtService;
 import security.secure.service.Impl.UserServiceImpl;
 
+import java.util.Objects;
+
 @RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 @RequiredArgsConstructor
@@ -84,16 +86,14 @@ public class UserController {
     @GetMapping("/panqueque/{id}")
     @PreAuthorize("hasAnyRole('ROLE_USER')")
     public ResponseEntity<?> panqueque(@RequestBody UserDTO userDto, @PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        //return ResponseEntity.status(HttpStatus.OK).body((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
-        /*User boby = (User) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        User boby = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(Objects.equals(id, boby.getId())){
-            return ResponseEntity.status(HttpStatus.OK).body("exito");
+            return ResponseEntity.status(HttpStatus.OK).body(userService.edit(id, userDto));
 
         }
         return ResponseEntity.status(HttpStatus.OK).body("fracaso");
-
-         */
 
     }
 

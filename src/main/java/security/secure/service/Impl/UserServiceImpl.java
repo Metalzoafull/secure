@@ -56,6 +56,14 @@ public class UserServiceImpl implements UserService , UserDetailsService {
     }
 
     @Override
+    public String edit(Long id, UserDTO userDTO) {
+        User user = findById(id);
+        if (userDTO.getUsername() != null) user.setUsername(userDTO.getUsername());
+        userRepository.save(user);
+        return "exito";
+    }
+
+    @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
