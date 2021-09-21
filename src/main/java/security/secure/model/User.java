@@ -10,7 +10,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
@@ -25,10 +28,22 @@ public class User implements UserDetails {
     private Long id;
 
     @Column
+    @NotBlank(message = "Username cannot be empty")
     private String username;
 
     @Column
+    @NotBlank(message = "Password cannot be empty")
     private String password;
+
+    @Column
+    @NotBlank(message = "Name cannot be empty")
+    @Size(min = 2, max = 32, message = "Name must be between 2 and 32 characters long")
+    private String name;
+
+    @Column
+    @NotBlank(message = "Lastname cannot be empty")
+    @Size(min = 2, max = 32, message = "Name must be between 2 and 32 characters long")
+    private String lastname;
 
     @JoinColumn(name = "role", referencedColumnName = "id")
     @ManyToOne

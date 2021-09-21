@@ -15,6 +15,7 @@ import security.secure.model.User;
 import security.secure.security.JwtService;
 import security.secure.service.Impl.UserServiceImpl;
 
+import javax.validation.Valid;
 import java.util.Objects;
 
 @RestController
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) throws Exception {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO) throws Exception {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(userService.create(userDTO));
         } catch (Exception e) {
@@ -53,21 +54,15 @@ public class UserController {
 
     @GetMapping("/login")
     @PreAuthorize("hasAnyRole('ROLE_USER')")
-    public ResponseEntity<?> createTokeno(@RequestBody UserDTO userDTO) throws Exception {
+    public ResponseEntity<?> createTokeno(@RequestBody UserDTO userDTO){
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDTO.getUsername(), userDTO.getPassword());
         return ResponseEntity.status(HttpStatus.OK).body(authentication);
 
     }
 
-    @GetMapping("/hola")
-    @PreAuthorize("hasAnyRole('ROLE_USER')")
-    public ResponseEntity<?> hola(){
-        return ResponseEntity.status(HttpStatus.OK).body("nice");
-    }
-
     @GetMapping("/testing")
     //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<?> createTokenoa(@RequestBody UserDTO userDTO) throws Exception {
+    public ResponseEntity<?> createTokenoa(@RequestBody UserDTO userDTO){
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDTO.getUsername(), userDTO.getPassword());
         return ResponseEntity.status(HttpStatus.OK).body(authenticationManager.authenticate(authentication));
 
@@ -86,15 +81,15 @@ public class UserController {
     @GetMapping("/panqueque/{id}")
     @PreAuthorize("hasAnyRole('ROLE_USER')")
     public ResponseEntity<?> panqueque(@RequestBody UserDTO userDto, @PathVariable Long id){
-        //return ResponseEntity.status(HttpStatus.OK).body((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-
         User boby = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(Objects.equals(id, boby.getId())){
             return ResponseEntity.status(HttpStatus.OK).body(userService.edit(id, userDto));
 
+        }else {
+            return ResponseEntity.status(HttpStatus.OK).body("fracaso");
         }
-        return ResponseEntity.status(HttpStatus.OK).body("fracaso");
-
     }
+
+
 
 }
