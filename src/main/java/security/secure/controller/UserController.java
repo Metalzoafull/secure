@@ -8,7 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import security.secure.dto.UserDTO;
 import security.secure.model.User;
@@ -25,9 +25,6 @@ public class UserController {
     private final UserServiceImpl userService;
     private final JwtService jwtService;
 
-
-
-    //falta encriptar la contraseña
     @PostMapping("/login")
     public ResponseEntity<?> createToken(@RequestBody UserDTO userDTO) throws Exception {
         try {
@@ -52,8 +49,6 @@ public class UserController {
         }
     }
 
-
-
     @GetMapping("/login")
     @PreAuthorize("hasAnyRole('ROLE_USER')")
     public ResponseEntity<?> createTokeno(@RequestBody UserDTO userDTO) throws Exception {
@@ -76,13 +71,30 @@ public class UserController {
 
     }
 
+    @PutMapping("/edit")
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> editar(@RequestBody UserDTO userDTO) throws Exception {
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body("authentication");
+        }catch (Exception e){
+            throw new Exception("Exploto algo", e);
+        }
+    }
 
+    @GetMapping("/panqueque/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public ResponseEntity<?> panqueque(@RequestBody UserDTO userDto, @PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
-    /*@GetMapping("/testing")
-    public ResponseEntity<?> getting(){
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findByUsername("jorge"));
+        /*User boby = (User) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        if(Objects.equals(id, boby.getId())){
+            return ResponseEntity.status(HttpStatus.OK).body("exito");
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("fracaso");
+
+         */
 
     }
 
-     */
-    }
+}

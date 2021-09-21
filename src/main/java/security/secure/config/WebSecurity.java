@@ -11,8 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import security.secure.security.JwtAuthorizationFilter;
 import security.secure.service.Impl.UserServiceImpl;
@@ -26,53 +24,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserServiceImpl userService;
 
-    //@Autowired
-    //private MyUserDetailService myUserDetailService;
-
     @Autowired
     private JwtAuthorizationFilter jwtAuthorizationFilter;
 
-
-    /*@Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //auth.userDetailsService(myUserDetailService);
-        auth
-                .userDetailsService(userService).passwordEncoder(passwordEncoder.passwordEncoder()).and()
-                .jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery("SELECT email, password, deleted "
-                        + "FROM users "
-                        + "WHERE email = ?")
-                .authoritiesByUsernameQuery("SELECT email, roles "
-                        + "FROM users"
-                        + "WHERE email = ?");    }
-
-     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
     }
-
-    /*
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder)
-                .and()
-                .authenticationProvider(authenticationProvider())
-                .jdbcAuthentication()
-                .dataSource(dataSource);
-    }
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        //authenticationProvider.setUserDetailsService();
-        authenticationProvider.setUserDetailsService(userService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder);
-        return authenticationProvider;
-    }
-
-     */
-
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -94,7 +52,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    //@Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();

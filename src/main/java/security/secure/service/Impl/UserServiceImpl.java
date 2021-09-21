@@ -1,7 +1,6 @@
 package security.secure.service.Impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +14,6 @@ import security.secure.repository.UserRepository;
 import security.secure.security.JwtService;
 import security.secure.service.UserService;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

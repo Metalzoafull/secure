@@ -30,7 +30,6 @@ public class User implements UserDetails {
     @Column
     private String password;
 
-    //@NotNull(message = "Role cannot be empty")
     @JoinColumn(name = "role", referencedColumnName = "id")
     @ManyToOne
     private Role roleId;
