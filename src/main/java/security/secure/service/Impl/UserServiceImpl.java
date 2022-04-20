@@ -83,5 +83,4 @@ public class UserServiceImpl implements UserService , UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return findByUsername(s);
     }
-    //mensaje de ejemplo
 }
